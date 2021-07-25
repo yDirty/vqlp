@@ -1,2 +1,3 @@
 from .ping import *
-from .new_commands import *
+from .data_commands import *
+from .vk_methods import *

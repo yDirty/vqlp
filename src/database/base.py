@@ -3,12 +3,36 @@ import typing as ty
 
 
 class Location:
-    """The database is in the path database.json category
-    All objects are taken from there for convenient work
+
+    """Использование базы данных.
+    Конфигурация происходит из json формата под "database.json"
+    Можно в ручную изменять данные в джсоне, к примеру <custom_prefixes>
+
+
+    Так-же есть обновление json формата по методу add_object_the_database(
+                                                     value: ty.Any,
+                                                     method: str)
+    :value Обьект, который будет сохранён в method.
+    :method Обьект, который хранится в database.json
+    100 строка данного файла.
+
+    Использование данного класса в коде:
+
+        from src.database.base import location
+
+        @app.command("info", prefixes=['/'])  #/info
+        async def wrapper(
+                  ctx: vq.NewMessage) -> ty.Optional[str]:
+            command_text = f'''
+        Кол-во заметок: {len(location.notes)}
+        Префиксы: {location.custom_prefixes}
+        '''
+            return command_text
     """
+
     notes: ty.List[dict]  # [{"name": "", "text": ""}]
     token: ty.Union[list, str]
-    deleter_prefixes: ty.List[dict]
+    deleter_prefixes: ty.Dict[list, str]
     custom_prefixes: ty.List[str]
     role_plays_commands: ty.List[str]
     trigger_prefixes: ty.List[str]
@@ -28,22 +52,6 @@ class Location:
     version: ty.Optional[str] = "1.0.0"
 
     def __init__(self) -> json.load:
-        """Set self.object the using for function
-        example:
-            def wrapper(db: Location):
-                my_token = db.token
-                print(my_token)
-
-            wrapper(DataJSON())
-
-        or:
-            def wrapper():
-                db = Location()
-                my_token = db.token
-                print(my_token)
-
-            wrapper()
-        """
         with open("database.json", encoding='utf-8') as opener_json_format:
             try:
                 keys = json.load(opener_json_format)

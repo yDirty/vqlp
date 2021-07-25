@@ -15,6 +15,7 @@ logger.add(sys.stdout,
 
 async def main():
     """Startup"""
+
     if len(location.token) < 85:
         logger.opt(colors=True).info(
             "Ошибка конфига. Введите ваш <red>access_token</red>"
@@ -27,7 +28,8 @@ async def main():
                 method='token'
             )
             user = response_token['user']['response'][0]
-            logger.opt(colors=True).info(f"Приветствуем вас, <green>{user['first_name']} {user['last_name']}</green>\nОжидаем 3 секунды.")
+            logger.opt(colors=True).info(
+                f"Приветствуем вас, <green>{user['first_name']} {user['last_name']}</green>\nОжидаем 3 секунды.")
             await asyncio.sleep(3)
             await app.coroutine_run(response_token['token'])
         else:
@@ -43,5 +45,4 @@ async def main():
             return None
 
 
-print(location.custom_prefixes)
 asyncio.run(main())
