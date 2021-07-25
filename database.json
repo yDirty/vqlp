@@ -1,10 +1,12 @@
 {
    "token": "",
-   "deleter_prefixes": [
-      {
-         "text_deleter": "Удаляю сообщения."
-      }
-   ],
+   "deleter_prefixes": {
+      "prefixes": [
+         "мур",
+         "123"
+      ],
+      "text_prefixes": "Удаляю сообщения."
+   },
    "custom_prefixes": [
       "слп "
    ],
@@ -27,7 +29,9 @@
          "идм "
       ]
    },
-   "idm_signal_prefixes": ["идм "],
+   "idm_signal_prefixes": [
+      "идм "
+   ],
    "auto_commands": {
       "auto_leave_chat": true,
       "auto_mine": false
