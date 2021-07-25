@@ -1,0 +1,35 @@
+{
+   "token": "",
+   "deleter_prefixes": [
+      {
+         "text_deleter": "Удаляю сообщения."
+      }
+   ],
+   "custom_prefixes": [
+      "слп "
+   ],
+   "rp_commands": [],
+   "triggers_prefixes": [
+      ".."
+   ],
+   "notes": [],
+   "ignore_list": [],
+   "muted_list": [],
+   "auto_kicked_user": [],
+   "friend_ids": [],
+   "auto_greeting": {
+      "value": true,
+      "text": "Здравствуйте! "
+   },
+   "IDM": {
+      "secret_code_idm": "",
+      "signal_prefixes": [
+         "идм "
+      ]
+   },
+   "idm_signal_prefixes": ["идм "],
+   "auto_commands": {
+      "auto_leave_chat": true,
+      "auto_mine": false
+   }
+}
