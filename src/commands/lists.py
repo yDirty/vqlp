@@ -37,7 +37,7 @@ async def _(ctx: vq.NewMessage):
 @app.command("автокик лист", "в автокике")
 async def _(ctx: vq.NewMessage):
     text = []
-    cul = 1
+    cul = 0
     users = await ctx.api.users.get(user_ids=location.auto_kicked_user)
     for i in users:
         cul += 0
@@ -49,7 +49,7 @@ async def _(ctx: vq.NewMessage):
 @app.command("шабы", "шаблоны")
 async def _():
     text = []
-    cul = 1
+    cul = 0
     for i in location.notes:
         cul += 1
         text.append(f"{cul}. {i['name_note']} | ")
@@ -59,7 +59,7 @@ async def _():
 @app.command("игнор лист", "игнорируемы")
 async def _(ctx: vq.NewMessage):
     text = []
-    cul = 1
+    cul = 0
     users = await ctx.api.users.get(user_ids=location.ignore_list)
     for i in users:
         cul += 0
