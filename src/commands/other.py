@@ -10,6 +10,16 @@ from src.config import error_sticker, complete_sticker
 from src.filters.error_handler import ErrorHandler
 
 
+@app.command("шаб", invalid_argument_config=ErrorHandler())
+async def get_note(ctx: vq.NewMessage, name: str):
+    if name not in [_['name_note'] for _ in location.notes]:
+        return f"{error_sticker} У вас нет шаблона <<{name}>>"
+
+    for i in location.notes:
+        if i['name_note'] == name:
+            await ctx.edit(i['message'], attachment=i['attachment'])
+
+
 @app.command("рп", invalid_argument_config=ErrorHandler())
 async def role_play_command(ctx: vq.NewMessage,
                             name_role: str,

@@ -18,9 +18,9 @@ except ModuleNotFoundError:
 2. PC
 3. Ubuntu (VDS)
 """)
+    pip = 'pip'
     if int(installer) == 1:
         pip = 'pip'
-        os.system(f"export CRYPTOGRAPHY_DONT_BUILD_RUST=1")
     elif int(installer) == 2:
         pip = 'pip'
     elif int(installer) == 3:
@@ -30,6 +30,8 @@ except ModuleNotFoundError:
     os.system(f"{pip} install --upgrade pip")
     print("[vqlp] Download package 'vkquick' ")
     time.sleep(1)
+    os.system(f"{pip} install --upgrade https://github.com/deknowny/vkquick/archive/1.0.zip --no-cache-dir")
+    os.system(f"export CRYPTOGRAPHY_DONT_BUILD_RUST=1")
     os.system(f"{pip} install --upgrade https://github.com/deknowny/vkquick/archive/1.0.zip --no-cache-dir")
     os.system("clear" if int(installer) == 1 or int(installer) == 3 else "cls")
     os.system(f"export CRYPTOGRAPHY_DONT_BUILD_RUST=0")

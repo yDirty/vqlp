@@ -8,5 +8,4 @@ app = vq.App(
     description="vq LongPoll",
     name="vq lp",
     debug=False,
-    prefixes=prefixes
-)
+    prefixes=prefixes)

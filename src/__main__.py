@@ -8,14 +8,13 @@ from src.filters.other import check_access_token
 from src.misc import app
 
 logger.add(sys.stdout,
-           format=f"[<yellow>SaintLongPoll</yellow>]" + " <blue>{"
-                                                        "message}</blue> [{time:HH:mm:ss}]",
+           format=f"[<yellow>Virtual Quarter</yellow>]" + " <blue>{"
+                                                          "message}</blue> [{time:HH:mm:ss}]",
            level="INFO")
 
 
 async def main():
     """Startup"""
-
     if len(location.token) < 85:
         logger.opt(colors=True).info(
             "Ошибка конфига. Введите ваш <red>access_token</red>"
@@ -34,7 +33,7 @@ async def main():
             await app.coroutine_run(response_token['token'])
         else:
             logger.opt(colors=True).info(
-                f"<red>Ошибка сервера VK</red> | <green>{response_token['error']}</green>"
+                f"<red>{response_token['desc']}</green>"
             )
             return None
     else:

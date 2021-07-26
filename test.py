@@ -1,3 +1,0 @@
-import pip
-
-print(pip)

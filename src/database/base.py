@@ -36,7 +36,7 @@ class Location:
     custom_prefixes: ty.List[str]
     role_plays_commands: ty.List[dict]
     trigger_prefixes: ty.List[str]
-    ignore_list: ty.List[dict]
+    ignore_list: ty.List[int]
     muted_list: ty.List[dict]
     friend_ids: ty.List[int]
 
@@ -59,7 +59,7 @@ class Location:
                 self.deleter_prefixes = keys['deleter_prefixes']
                 self.custom_prefixes = keys['custom_prefixes']
                 self.role_plays_commands = keys['role_plays_commands']
-                self.notes = keys['triggers_prefixes']
+                self.notes = keys['notes']
                 self.idm_secret_code = keys['IDM']['secret_code_idm']
                 self.trigger_prefixes = keys['triggers_prefixes']
                 self.idm_signal_prefixes = keys['IDM']['signal_prefixes']

@@ -9,35 +9,95 @@ from src.database.base import location
 from src.config import error_sticker, complete_sticker
 from src.filters.error_handler import ErrorHandler
 
+description_greeting = f"""
+Авто-приветствие
+Работает только на пользователей которые вошли в беседу
+по ссылке.
+Настройки: 
+Text: {location.auto_greeting['text']} Value: {location.auto_greeting['value']}
+"""
+
+
+@app.command("+приветствие", invalid_argument_config=ErrorHandler(), description=description_greeting)
+async def add_greeting(*, text: str) -> ty.Optional[str]:
+    location.add_object_the_database(value={'value': True, "text": text})
+    return f"{complete_sticker} | Успешно включено приветствие, текст: {text}"
+
+
+@app.command("-приветствие", invalid_argument_config=ErrorHandler())
+async def delete_greeting() -> ty.Optional[str]:
+    location.add_object_the_database(value={'value': False, "text": 'Close.'})
+    return f"{complete_sticker} | Успешно выключено приветствие"
+
+
+@app.command("+шаб", "+шаблон", invalid_argument_config=ErrorHandler())
+async def add_note(
+        ctx: vq.NewMessage,
+        name: str,
+        *,
+        text: str
+) -> ty.Optional[str]:
+    base = [note['name_note'] for note in location.notes]
+    if name in base:
+        return f"{error_sticker} У вас уже есть шаблон с таким именем."
+
+    attachments_all = []
+    await ctx.msg.extend(ctx.api)
+    fields = ctx.msg.fields
+    for i in fields['attachments']:
+        try:
+            if i is None:
+                ...
+            else:
+                attachments_all.append(f"{i['type']}{i[i['type']]['owner_id']}_{i[i['type']]['id']}")
+        except:
+            ...
+
+    data_note = {
+        "name_note": name,
+        "message": text,
+        "attachment": attachments_all if len(attachments_all) > 0 else None
+    }
+    location.notes.append(data_note)
+    location.add_object_the_database(value=location.notes, method='notes')
+    await ctx.edit(f"Вы успешно создали шаблон. Длина символов: {len(text)} | Вложений: {len(attachments_all)}")
+
+
+@app.command("-шаб", '-шаблон', invalid_argument_config=ErrorHandler())
+async def delete_note(name: str) -> ty.Optional[str]:
+    base: list = [note['name_note'] for note in location.notes]
+    if name not in base:
+        return f"{error_sticker} У вас нету шаблона <<{name}>>"
+
+    for i in location.notes:
+        if i['name_note'] == name:
+            location.notes.remove(i)
+
+    return f"""{complete_sticker} Успешно удалён шаблон <<{name}>>"""
+
 
 @app.command("+игнор")
-async def add_for_ignore_user(
-        user: vq.User
-
-) -> str:
+async def add_for_ignore_user(user: vq.User) -> str:
     if user.id in location.ignore_list:
         return f"{error_sticker} Ошибка. Данный пользователь уже есть в игнор листе."
-    user_ids = location.ignore_list.append(user.id)
-    location.add_object_the_database(user_ids, 'ignore_list')
+    location.ignore_list.append(user.id)
+    location.add_object_the_database(value=location.ignore_list, method='ignore_list')
     return f"{complete_sticker} Пользователь {user:@[fullname]} был добавлен в игнор-лист"
 
 
 @app.command("-игнор")
-async def add_for_ignore_user(
-        user: vq.User
-
-) -> str:
+async def add_for_ignore_user(user: vq.User) -> str:
     if user.id not in location.ignore_list:
         return f"{error_sticker} Ошибка. Данного пользователя нет в игнор листе."
 
-    user_ids = location.ignore_list.remove(user.id)
-    location.add_object_the_database(user_ids, 'ignore_list')
+    location.ignore_list.remove(user.id)
+    location.add_object_the_database(value=location.ignore_list, method='ignore_list')
     return f"{complete_sticker} Пользователь {user:@[fullname]} был убран из игнор-листа"
 
 
 @app.command("+префикс", invalid_argument_config=ErrorHandler())
-async def add_prefix(ctx: vq.NewMessage,
-                     new_prefix: str):
+async def add_prefix(
+        new_prefix: str):
     if new_prefix.strip() + ' ' in location.custom_prefixes:
         return f"{error_sticker} | У вас уже есть данный префикс <<{new_prefix}>>"
 
@@ -47,8 +107,8 @@ async def add_prefix(ctx: vq.NewMessage,
 
 
 @app.command("-префикс", invalid_argument_config=ErrorHandler())
-async def add_prefix(ctx: vq.NewMessage,
-                     old_prefix: str):
+async def add_prefix(
+        old_prefix: str):
     if old_prefix + ' ' not in location.custom_prefixes:
         return f"{error_sticker} | У вас нету префикса <<{old_prefix}>>"
 
@@ -92,7 +152,7 @@ async def delete_role_play(name_rp: str) -> str:
 
 
 @app.command("+удалялка", invalid_argument_config=ErrorHandler())
-async def add_deleter(ctx: vq.NewMessage, *, new_prefix: str):
+async def add_deleter(*, new_prefix: str):
     """Added new prefix for delete messages"""
     prefixes: list = location.deleter_prefixes['prefixes']
     text_prefixes = location.deleter_prefixes['text_prefixes']
@@ -109,7 +169,7 @@ async def add_deleter(ctx: vq.NewMessage, *, new_prefix: str):
 
 
 @app.command("-удалялка", invalid_argument_config=ErrorHandler())
-async def delete_deleter(ctx: vq.NewMessage, *, old_prefix: str):
+async def delete_deleter(*, old_prefix: str):
     """Added new prefix for delete messages"""
     prefixes: list = location.deleter_prefixes['prefixes']
     text_prefixes = location.deleter_prefixes['text_prefixes']
