@@ -10,6 +10,31 @@ from src.config import error_sticker, complete_sticker
 from src.filters.error_handler import ErrorHandler
 
 
+@app.command("+игнор")
+async def add_for_ignore_user(
+        user: vq.User
+
+) -> str:
+    if user.id in location.ignore_list:
+        return f"{error_sticker} Ошибка. Данный пользователь уже есть в игнор листе."
+    user_ids = location.ignore_list.append(user.id)
+    location.add_object_the_database(user_ids, 'ignore_list')
+    return f"{complete_sticker} Пользователь {user:@[fullname]} был добавлен в игнор-лист"
+
+
+@app.command("-игнор")
+async def add_for_ignore_user(
+        user: vq.User
+
+) -> str:
+    if user.id not in location.ignore_list:
+        return f"{error_sticker} Ошибка. Данного пользователя нет в игнор листе."
+
+    user_ids = location.ignore_list.remove(user.id)
+    location.add_object_the_database(user_ids, 'ignore_list')
+    return f"{complete_sticker} Пользователь {user:@[fullname]} был убран из игнор-листа"
+
+
 @app.command("+префикс", invalid_argument_config=ErrorHandler())
 async def add_prefix(ctx: vq.NewMessage,
                      new_prefix: str):

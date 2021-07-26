@@ -9,7 +9,7 @@ class Location:
     Можно в ручную изменять данные в джсоне, к примеру <custom_prefixes>
 
 
-    Так-же есть обновление json формата по методу add_object_the_database(
+    Также есть добавление данных json формата по методу add_object_the_database(
                                                      value: ty.Any,
                                                      method: str)
     :value Обьект, который будет сохранён в method.

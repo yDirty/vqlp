@@ -10,7 +10,6 @@
    "custom_prefixes": [
       "слп "
    ],
-   "rp_commands": [],
    "triggers_prefixes": [
       ".."
    ],
@@ -33,7 +32,19 @@
       "идм "
    ],
    "auto_commands": {
-      "auto_leave_chat": true,
+      "auto_leave_chat": false,
       "auto_mine": false
-   }
+   },
+   "role_plays_commands": [
+      {
+         "name": "обнять",
+         "value": "обнял",
+         "sticker": "😋"
+      },
+      {
+         "name": "выебать",
+         "value": "выебал",
+         "sticker": "🥰"
+      }
+   ]
 }
