@@ -58,7 +58,7 @@ class Location:
                 self.token = keys['token']
                 self.deleter_prefixes = keys['deleter_prefixes']
                 self.custom_prefixes = keys['custom_prefixes']
-                self.role_plays_commands = keys['rp_commands']
+                self.role_plays_commands = keys['role_plays_commands']
                 self.notes = keys['triggers_prefixes']
                 self.idm_secret_code = keys['IDM']['secret_code_idm']
                 self.trigger_prefixes = keys['triggers_prefixes']

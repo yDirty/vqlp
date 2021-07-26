@@ -10,6 +10,28 @@ from src.config import error_sticker, complete_sticker
 from src.filters.error_handler import ErrorHandler
 
 
+@app.command("+префикс", invalid_argument_config=ErrorHandler())
+async def add_prefix(ctx: vq.NewMessage,
+                     new_prefix: str):
+    if new_prefix.strip() + ' ' in location.custom_prefixes:
+        return f"{error_sticker} | У вас уже есть данный префикс <<{new_prefix}>>"
+
+    location.custom_prefixes.append(new_prefix.strip() + ' ')
+    location.add_object_the_database(method='custom_prefixes', value=location.custom_prefixes)
+    return f"""{complete_sticker} Создан новый префикс <<{new_prefix}>>."""
+
+
+@app.command("-префикс", invalid_argument_config=ErrorHandler())
+async def add_prefix(ctx: vq.NewMessage,
+                     old_prefix: str):
+    if old_prefix + ' ' not in location.custom_prefixes:
+        return f"{error_sticker} | У вас нету префикса <<{old_prefix}>>"
+
+    location.custom_prefixes.remove(old_prefix.strip() + ' ')
+    location.add_object_the_database(method='custom_prefixes', value=location.custom_prefixes)
+    return f"""{complete_sticker} Удалён префикс <<{old_prefix}>>."""
+
+
 @app.command("+рп", 'добавить рп', invalid_argument_config=ErrorHandler(),
              description="+рп название стикер действие")
 async def add_role_play(
