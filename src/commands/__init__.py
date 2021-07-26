@@ -4,3 +4,4 @@ from .vk_methods import *
 from .other import *
 from .on_messages import *
 from .idm import *
+from .lists import *

@@ -18,6 +18,26 @@ Text: {location.auto_greeting['text']} Value: {location.auto_greeting['value']}
 """
 
 
+@app.command("+автокик", "в автокик", invalid_argument_config=ErrorHandler())
+async def add_to_auto_kick_user(user: vq.User) -> ty.Optional[str]:
+    if user.id in location.auto_kicked_user:
+        return f"{error_sticker} Пользователь уже в авто-кике"
+
+    location.auto_kicked_user.append(user.id)
+    location.add_object_the_database(value=location.auto_kicked_user, method='auto_kicked_user')
+    return f"{complete_sticker} {user:@[fullname]} Успешно добавлен в список авто-кика"
+
+
+@app.command("-автокик", "из автокика", invalid_argument_config=ErrorHandler())
+async def add_to_auto_kick_user(user: vq.User) -> ty.Optional[str]:
+    if user.id not in location.auto_kicked_user:
+        return f"{error_sticker} Пользователя нет в списке авто-кика"
+
+    location.auto_kicked_user.remove(user.id)
+    location.add_object_the_database(value=location.auto_kicked_user, method='auto_kicked_user')
+    return f"{complete_sticker} {user:@[fullname]} Успешно убран из списка авто-кика"
+
+
 @app.command("+приветствие", invalid_argument_config=ErrorHandler(), description=description_greeting)
 async def add_greeting(*, text: str) -> ty.Optional[str]:
     location.add_object_the_database(value={'value': True, "text": text})

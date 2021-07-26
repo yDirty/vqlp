@@ -10,6 +10,40 @@ from src.config import error_sticker, complete_sticker
 from src.filters.error_handler import ErrorHandler
 
 
+async def messages_send(context: vq.NewMessage,
+                        cul: int,
+                        time_sleep: float,
+                        text: str,
+                        attachments: ty.Union[None, list, str]):
+    for i in range(cul):
+        await asyncio.sleep(time_sleep)
+        await context.answer(text, attachment=attachments)
+
+
+@app.command("спам")
+async def spam(ctx: vq.NewMessage, cul: int, time_sleep: float, *, text: str):
+    attachments_all = []
+    await ctx.msg.extend(ctx.api)
+    fields = ctx.msg.fields
+    for i in fields['attachments']:
+        try:
+            if i is None:
+                ...
+            else:
+                attachments_all.append(f"{i['type']}{i[i['type']]['owner_id']}_{i[i['type']]['id']}")
+        except:
+            ...
+
+    asyncio.create_task(messages_send(
+        context=ctx,
+        text=text,
+        cul=cul,
+        attachments=attachments_all if len(attachments_all) > 0 else None,
+        time_sleep=time_sleep
+    ))
+    await ctx.edit(text)
+
+
 @app.command("шаб", invalid_argument_config=ErrorHandler())
 async def get_note(ctx: vq.NewMessage, name: str):
     if name not in [_['name_note'] for _ in location.notes]:
@@ -39,18 +73,6 @@ async def role_play_command(ctx: vq.NewMessage,
         f"{sticker} | {i:@[fullname]} {value_} {user:@[fullname]}")
 
 
-@app.command("рпшки")
-async def role_play_commands_get():
-    """Get list for location.role_plays_commands"""
-    text = f"""
-Ваши рп-команды:
-Стикер | Название | Действие
-{''.join([f"{role['sticker']} | {role['name']} | {role['value']}<br>"
-          for role in location.role_plays_commands])}
-"""
-    return text
-
-
 @app.command("инфа")
 async def get_information() -> str:
     text = f'''
@@ -65,10 +87,14 @@ async def get_information() -> str:
 Шаблонов: {len(location.notes)}
 РП-Команд: {len(location.role_plays_commands)}
 Людей в игноре: {len(location.ignore_list)}
+Людей в автокике: {len(location.auto_kicked_user)}
+Доверенных: {len(location.friend_ids)}
+
 Доверенных: {len(location.friend_ids)}
 
 IDM: {'Покдлючен' if len(location.idm_secret_code) < 0 else "Не подключен."}
 IDM-Префиксы сигнала: {' | '.join([prefix for prefix in location.idm_signal_prefixes])}
+
 Авто-команды:
 Автоферма: {'Включена' if location.auto_mine else "Выключенна."}
 Авто выход: {'Покдлючен' if location.auto_leave_chat else "Не подключен."}
