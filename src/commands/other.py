@@ -90,8 +90,6 @@ async def get_information() -> str:
 Людей в автокике: {len(location.auto_kicked_user)}
 Доверенных: {len(location.friend_ids)}
 
-Доверенных: {len(location.friend_ids)}
-
 IDM: {'Покдлючен' if len(location.idm_secret_code) < 0 else "Не подключен."}
 IDM-Префиксы сигнала: {' | '.join([prefix for prefix in location.idm_signal_prefixes])}
 
