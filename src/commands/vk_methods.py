@@ -1,11 +1,12 @@
 import vkquick as vq
 
 from src.config import complete_sticker, error_sticker
+from src.filters.error_handler import ErrorHandler
 from src.misc import app
 from src.database.base import location
 
 
-@app.command("+др")
+@app.command("+др", invalid_argument_config=ErrorHandler())
 async def friend_add(ctx: vq.NewMessage, user: vq.User):
     try:
         method = await ctx.api.friends.add(user_id=user.id)
@@ -20,7 +21,7 @@ async def friend_add(ctx: vq.NewMessage, user: vq.User):
         await ctx.edit(f"{error_sticker} Невозможно добавить в друзья самого себя.")
 
 
-@app.command("-др")
+@app.command("-др", invalid_argument_config=ErrorHandler())
 async def friend_delete(ctx: vq.NewMessage, user: vq.User):
     try:
         method = await ctx.api.friends.delete(user_id=user.id)
@@ -35,12 +36,12 @@ async def friend_delete(ctx: vq.NewMessage, user: vq.User):
         await ctx.edit("Пользователя нету в друзьях.")
 
 
-@app.command("ид")
+@app.command("ид", invalid_argument_config=ErrorHandler())
 async def revolve_user(ctx: vq.NewMessage, user: vq.User):
     await ctx.edit(f"✅Айди пользователя {user.fullname}: [id{user.id}|{user.id}]")
 
 
-@app.command("влс")
+@app.command("влс", invalid_argument_config=ErrorHandler())
 async def send_message(ctx: vq.NewMessage, user: vq.User, *, text: str):
     await ctx.api.messages.send(
         user_id=user.id,

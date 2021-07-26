@@ -34,7 +34,7 @@ class Location:
     token: ty.Union[list, str]
     deleter_prefixes: ty.Dict[list, str]
     custom_prefixes: ty.List[str]
-    role_plays_commands: ty.List[str]
+    role_plays_commands: ty.List[dict]
     trigger_prefixes: ty.List[str]
     ignore_list: ty.List[dict]
     muted_list: ty.List[dict]
