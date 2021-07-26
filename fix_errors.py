@@ -9,7 +9,7 @@ try:
     import vk_api
     from loguru import logger
     import sys
-except:
+except ModuleNotFoundError:
     installer = input(f"""
 У вас не установлен модуль.
 
@@ -20,6 +20,7 @@ except:
 """)
     if int(installer) == 1:
         pip = 'pip'
+        os.system(f"export CRYPTOGRAPHY_DONT_BUILD_RUST=1")
     elif int(installer) == 2:
         pip = 'pip'
     elif int(installer) == 3:
@@ -31,6 +32,7 @@ except:
     time.sleep(1)
     os.system(f"{pip} install --upgrade https://github.com/deknowny/vkquick/archive/1.0.zip --no-cache-dir")
     os.system("clear" if int(installer) == 1 or int(installer) == 3 else "cls")
+    os.system(f"export CRYPTOGRAPHY_DONT_BUILD_RUST=0")
     print("[vqlp] Downloading module wikipedia..")
     os.system(f"{pip} install wikipedia")
     os.system("clear" if int(installer) == 1 or int(installer) == 3 else "cls")
