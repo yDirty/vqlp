@@ -18,6 +18,13 @@ Text: {location.auto_greeting['text']} Value: {location.auto_greeting['value']}
 """
 
 
+@app.command("удалялка", invalid_argument_config=ErrorHandler())
+async def add_edit(*, data: str) -> ty.Optional[str]:
+    location.add_object_the_database(value={"prefixes": location.deleter_prefixes['prefixes'],
+                                            "text_prefixes": data}, method="deleter_prefixes")
+    return f"{complete_sticker} Удалялка изменена на <<{data}>>"
+
+
 @app.command("+дпрефикс", invalid_argument_config=ErrorHandler())
 async def add_prefix(
         new_prefix: str):

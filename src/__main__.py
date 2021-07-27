@@ -5,7 +5,7 @@ Framework the write bot: VKQuick.
 Virtual Quarter Version: 1.0.7
 
 Github: https://github.com/ymoth/vqlp
-VKGroup: vk.com/vqlongpolling
+VKGroup: https://vk.com/vqlongpoll
 """
 
 import asyncio
@@ -62,8 +62,7 @@ async def main():
             return None
     else:
         try:
-            # await app.coroutine_run('token1', 'token2', 'token3')
-            await app.coroutine_run(location.token)
+            await app.coroutine_run('token1', '2', '3')
         except:
             logger.opt(colors=True).info("<red>Ошибка VK API! [5] Токен не действителен. ")
             return None
