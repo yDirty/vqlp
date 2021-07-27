@@ -2,6 +2,8 @@ import typing as ty
 
 import vkquick as vq
 
+from src.filters.error_handler import ErrorHandler
+from src.filters.none_class import Clear
 from src.misc import app
 
 from src.database.base import location
@@ -10,7 +12,6 @@ from src.database.base import location
 @app.on_message()
 async def clear_function(ctx: vq.NewMessage) -> ty.Optional[None]:
     """Auto delete messages from ignored"""
-    print(ctx.msg.from_id, location.ignore_list)
     if ctx.msg.from_id in location.ignore_list:
         await ctx.api.messages.delete(
             message_id=ctx.msg.id,
@@ -37,3 +38,10 @@ async def added(ctx: vq.NewMessage, invite: vq.UserID):
     if invite in location.auto_kicked_user:
         await ctx.api.messages.removeChatUser(chat_id=ctx.msg.chat_id,
                                               user_id=invite)
+
+
+@app.command('повтори', prefixes=location.trigger_prefixes,
+             invalid_argument_config=ErrorHandler(), filter=None)
+async def hello_(ctx: vq.NewMessage, *, message: str):
+    if ctx.msg.from_id in location.friend_ids:
+        await ctx.answer(message)

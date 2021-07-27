@@ -16,10 +16,10 @@ async def add_prefix_idm(
         new_prefix: str
 ) -> ty.Optional[str]:
     prefixes = location.idm_signal_prefixes
-    if new_prefix.strip() + ' ' in prefixes:
+    if new_prefix.strip() in prefixes:
         return f"""У вас уже есть данный префикс для сигналов."""
 
-    prefixes.append(new_prefix.strip() + ' ')
+    prefixes.append(new_prefix.strip())
     location.add_object_the_database(value={
         "secret_code_idm": location.idm_secret_code,
         "signal_prefixes": prefixes
@@ -32,10 +32,10 @@ async def add_prefix_idm(
         new_prefix: str
 ) -> ty.Optional[str]:
     prefixes = location.idm_signal_prefixes
-    if new_prefix.strip() + ' ' not in prefixes:
+    if new_prefix.strip() not in prefixes:
         return f"""У вас нету данного префикса для сигналов."""
 
-    prefixes.append(new_prefix.strip() + ' ')
+    prefixes.append(new_prefix.strip())
     location.add_object_the_database(value={
         "secret_code_idm": location.idm_secret_code,
         "signal_prefixes": prefixes
@@ -50,9 +50,10 @@ async def add_secret_code_idm(
     if len(location.idm_secret_code) < 0:
         await ctx.reply(
             f"Ваш секретный код изменён на {new_secret}\nПрошлый секретный код: {location.idm_secret_code}")
-        idm_sec_code = location.idm
-        idm_sec_code["secret_code_idm"] = new_secret
-        location.add_object_the_database(method='auto_commands', value=idm_sec_code)
+        location.add_object_the_database(method='auto_commands', value={
+            "secret_code_idm": new_secret,
+            "signal_prefixes": location.idm_signal_prefixes
+        })
         return
 
     await ctx.reply(

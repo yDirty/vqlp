@@ -18,6 +18,52 @@ Text: {location.auto_greeting['text']} Value: {location.auto_greeting['value']}
 """
 
 
+@app.command("+дпрефикс", invalid_argument_config=ErrorHandler())
+async def add_prefix(
+        new_prefix: str):
+    if new_prefix.strip() + ' ' in location.trigger_prefixes:
+        return f"{error_sticker} | У вас уже есть данный дпрефикс <<{new_prefix}>>"
+
+    location.custom_prefixes.append(new_prefix.strip() + ' ')
+    location.add_object_the_database(method='custom_prefixes', value=location.trigger_prefixes)
+    return f"""{complete_sticker} Создан новый дпрефикс <<{new_prefix}>>."""
+
+
+@app.command("-дпрефикс", invalid_argument_config=ErrorHandler())
+async def add_prefix(
+        old_prefix: str):
+    if old_prefix + ' ' not in location.trigger_prefixes:
+        return f"{error_sticker} | У вас нету дпрефикса <<{old_prefix}>>"
+
+    location.custom_prefixes.remove(old_prefix.strip() + ' ')
+    location.add_object_the_database(method='custom_prefixes', value=location.trigger_prefixes)
+    return f"""{complete_sticker} Удалён дпрефикс <<{old_prefix}>>."""
+
+
+@app.command("+дов", "вдов", invalid_argument_config=ErrorHandler())
+async def add_friend(
+        user: vq.User
+) -> ty.Optional[str]:
+    if user.id in location.friend_ids:
+        return f"{error_sticker} | У вас уже есть {user:@[fullname]} в довах."
+
+    location.friend_ids.append(user.id)
+    location.add_object_the_database(value=location.friend_ids, method='friend_ids')
+    return f"{complete_sticker} Пользователь {user:@[fullname]} успешно добавлен в довы."
+
+
+@app.command("-дов", "издов", invalid_argument_config=ErrorHandler())
+async def add_friend(
+        user: vq.User
+) -> ty.Optional[str]:
+    if user.id not in location.friend_ids:
+        return f"{error_sticker} | У вас нету {user:@[fullname]} в довах."
+
+    location.friend_ids.remove(user.id)
+    location.add_object_the_database(value=location.friend_ids, method='friend_ids')
+    return f"{complete_sticker} Пользователь {user:@[fullname]} успешно убран из доверенных."
+
+
 @app.command("+автокик", "в автокик", invalid_argument_config=ErrorHandler())
 async def add_to_auto_kick_user(user: vq.User) -> ty.Optional[str]:
     if user.id in location.auto_kicked_user:

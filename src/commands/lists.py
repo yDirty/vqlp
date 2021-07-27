@@ -1,13 +1,9 @@
-import asyncio
-import typing as ty
-
 import vkquick as vq
 
 from src.misc import app
 
 from src.database.base import location
-from src.config import error_sticker, complete_sticker
-from src.filters.error_handler import ErrorHandler
+from src.config import complete_sticker
 
 
 @app.command("рпшки")
@@ -28,7 +24,7 @@ async def _(ctx: vq.NewMessage):
     cul = 1
     users = await ctx.api.users.get(user_ids=location.muted_list)
     for i in users:
-        cul += 0
+        cul += 1
         text.append(f"{cul}. @id{i['id']}({i['first_name']} {i['last_name']})\n")
 
     return f"{complete_sticker} Пользователи в муте: \n{' '.join(text)}"
@@ -40,7 +36,7 @@ async def _(ctx: vq.NewMessage):
     cul = 0
     users = await ctx.api.users.get(user_ids=location.auto_kicked_user)
     for i in users:
-        cul += 0
+        cul += 1
         text.append(f"{cul}. @id{i['id']}({i['first_name']} {i['last_name']})\n")
 
     return f"{complete_sticker} Автокик пользователи: \n{' '.join(text)}"
@@ -62,7 +58,19 @@ async def _(ctx: vq.NewMessage):
     cul = 0
     users = await ctx.api.users.get(user_ids=location.ignore_list)
     for i in users:
-        cul += 0
+        cul += 1
         text.append(f"{cul}. @id{i['id']}({i['first_name']} {i['last_name']})\n")
 
     return f"{complete_sticker} Игнорируемые пользователи: \n{' '.join(text)}"
+
+
+@app.command("дов лист", "довы")
+async def _(ctx: vq.NewMessage):
+    text = []
+    cul = 0
+    users = await ctx.api.users.get(user_ids=location.friend_ids)
+    for i in users:
+        cul += 1
+        text.append(f"{cul}. @id{i['id']}({i['first_name']} {i['last_name']})\n")
+
+    return f"{complete_sticker} Доверенные пользователи: \n{' '.join(text)}"
