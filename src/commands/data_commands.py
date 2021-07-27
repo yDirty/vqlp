@@ -21,22 +21,22 @@ Text: {location.auto_greeting['text']} Value: {location.auto_greeting['value']}
 @app.command("+дпрефикс", invalid_argument_config=ErrorHandler())
 async def add_prefix(
         new_prefix: str):
-    if new_prefix.strip() + ' ' in location.trigger_prefixes:
+    if new_prefix.strip() in location.trigger_prefixes:
         return f"{error_sticker} | У вас уже есть данный дпрефикс <<{new_prefix}>>"
 
-    location.custom_prefixes.append(new_prefix.strip() + ' ')
-    location.add_object_the_database(method='custom_prefixes', value=location.trigger_prefixes)
+    location.custom_prefixes.append(new_prefix.strip())
+    location.add_object_the_database(method='trigger_prefixes', value=location.trigger_prefixes)
     return f"""{complete_sticker} Создан новый дпрефикс <<{new_prefix}>>."""
 
 
 @app.command("-дпрефикс", invalid_argument_config=ErrorHandler())
 async def add_prefix(
         old_prefix: str):
-    if old_prefix + ' ' not in location.trigger_prefixes:
+    if old_prefix not in location.trigger_prefixes:
         return f"{error_sticker} | У вас нету дпрефикса <<{old_prefix}>>"
 
     location.custom_prefixes.remove(old_prefix.strip() + ' ')
-    location.add_object_the_database(method='custom_prefixes', value=location.trigger_prefixes)
+    location.add_object_the_database(method='trigger_prefixes', value=location.trigger_prefixes)
     return f"""{complete_sticker} Удалён дпрефикс <<{old_prefix}>>."""
 
 
